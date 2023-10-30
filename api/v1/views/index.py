@@ -6,6 +6,7 @@ from models import storage
 
 classes = ("Amenity", "City", "Place", "Review", "State", "User")
 
+
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """ returns a JSON"""
