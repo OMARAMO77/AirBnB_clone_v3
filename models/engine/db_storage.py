@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the class DBStorage.
+Contains the class DBStorage
 """
 
 import models
@@ -72,16 +72,22 @@ class DBStorage:
         self.__session = Session
 
     def get(self, cls, id):
-        """Retrieve one object"""
-        key = cls.__name__ + '.' + id
+        """Returns the object based on the class and its ID"""
+        if type(cls) == str:
+            cls = classes.get(cls)
+        if cls is None:
+            return None
         return self.__session.query(cls).filter(cls.id == id).first()
 
     def count(self, cls=None):
-        """Count the number of objects in storage"""
+        """count the number of objects in storage"""
+        if type(cls) is str:
+            cls = classes.get(cls)
         if cls is None:
-            return sum(self.__session.query(cls).count() for cls in classes.values())
-        return self.__session.query(cls).count()
+            return len(self.all())
+        return len(self.all(cls))
 
-    def close(self):
+    def close(self, f=None):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+        return (f)
