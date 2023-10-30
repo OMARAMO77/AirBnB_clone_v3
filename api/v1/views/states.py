@@ -16,7 +16,7 @@ def handle_states():
         data = request.get_json()
         if data is None:
             return jsonify({'error': 'Not a JSON'}), 400
-        elif data.get('name') is None:
+        if 'name' not in data:
             return jsonify({'error': 'Missing name'}), 400
         state = State(**data)
         storage.new(state)
