@@ -37,10 +37,10 @@ def delete_state(state_id):
 def create_state():
     """Creates a State"""
     data = request.get_json()
-    if data is None or type(post) != dict:
-        abort(400, description="Not a JSON")
+    if data is None:
+        return jsonify({'error': 'Not a JSON'}), 400
     if 'name' not in data:
-        abort(400, description="Missing name")
+        return jsonify({'error': 'Missing name'}), 400
     state = State(**data)
     storage.new(state)
     storage.save()
@@ -54,8 +54,8 @@ def update_state(state_id):
     if state is None:
         abort(404)
     data = request.get_json()
-    if data is None or type(post) != dict:
-        abort(400, description="Not a JSON")
+    if data is None:
+        return jsonify({'error': 'Not a JSON'}), 400
     for key, value in data.items():
         if key not in ('id', 'created_at', 'updated_at'):
             setattr(state, key, value)
